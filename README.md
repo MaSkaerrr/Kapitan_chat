@@ -1,1 +1,2 @@
-# Web_chat
+# Kapitan Chat
+is chat for real ♂ pirates ♂ 
