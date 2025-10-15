@@ -1,27 +1,33 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import Main from "./Main/Main";
-import Faq from "./ComponentPage/Faq";
-import OneTask from "./ComponentPage/OneTask";
 import NotFound from "./ComponentPage/NotFound";
-import Breadcrumbs from "./ComponentPage/Breadcrumbs/Breadcrumbs";
-import Start from "./ComponentPage/Start/Start";
-import ToDoListLayout from "./ComponentPage/ToDoListLayout/ToDoListLayout";
+
+
+import BaseLayout from "./ComponentPage/_layout/BaseLayout";
+import SignIn from "./ComponentPage/Sign In";
+import SignUp from "./ComponentPage/Sign Up";
+import Logout from "./ComponentPage/LogOut";
+import AuthProvider from "./Provider/AuthProvider";
+import AvatarUpload from "./ComponentPage/AvatarUpload";
 function App() {
+  
   return (
-    <> 
-       <ToDoListLayout></ToDoListLayout>
+    <AuthProvider> 
+      <BaseLayout></BaseLayout>
       <Routes>
    
-        <Route index element={<Start></Start>}></Route>
-        <Route path="main" element={<><Breadcrumbs/><Main /></>}></Route>
-        <Route path="faq" element={<><Breadcrumbs/><Faq/></>} />
-        <Route path="onetask" element={<><Breadcrumbs/><OneTask/></>} />
-        <Route path="*" element={<><Breadcrumbs/><NotFound/></>} />
+        <Route index element={<Main></Main>}></Route>
+        <Route path="main" element={<><Main /></>}></Route>
+        <Route path="signin" element={<><SignIn /></>}></Route>
+        <Route path="signup" element={<><SignUp /></>}></Route>
+        <Route path="logout" element={<><Logout /></>}></Route>
+        <Route path="avatar" element={<><AvatarUpload /></>}></Route>
+        <Route path="*" element={<><NotFound/></>} />
       
       </Routes>
    
       <Outlet />
-    </>
+    </AuthProvider>
   );
 }
 
