@@ -13,3 +13,5 @@ urlpatterns = [
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('register/', RegisterView.as_view(), name='register'),
 ]
+
+urlpatterns += router.urls
