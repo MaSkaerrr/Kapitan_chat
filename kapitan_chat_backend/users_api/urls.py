@@ -15,4 +15,4 @@ urlpatterns = [
     path('me/', GetMe.as_view(), name='get_me'),
 ]
 
-urlpatterns += router.urlso
+urlpatterns += router.urls
