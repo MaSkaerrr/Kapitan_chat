@@ -37,7 +37,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         exclude = ['id', 'user']
 
-class MeUserSerializer(serializers.Serializer):
+class UserSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     username = serializers.CharField()
     first_name = serializers.CharField()
