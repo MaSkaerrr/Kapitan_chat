@@ -48,3 +48,19 @@ class MeUserSerializer(serializers.Serializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name', 'last_name', 'email', 'profile']
+
+
+
+class GetUsersSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    username = serializers.CharField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    email = serializers.EmailField()
+    profile = ProfileSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = "__all__"
+
+    

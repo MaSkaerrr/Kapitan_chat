@@ -16,12 +16,13 @@ class UserSettingsSerializer(serializers.ModelSerializer):
     user = serializers.CurrentUserDefault()
     
     language = serializers.ChoiceField(choices=Lang.choices)
+    theme = serializers.BooleanField(default=False)
     locale = serializers.SerializerMethodField(read_only=True)
     language_choices = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = UserSettings
-        fields = ["id","user", "language", "locale", "language_choices"]
+        fields = ["id","user", "language", "theme", "locale", "language_choices"]
 
     def get_locale(self, obj):
         try:

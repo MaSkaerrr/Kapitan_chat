@@ -16,6 +16,8 @@ class Lang(models.TextChoices):
 class UserSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     language = models.CharField(default=Lang.EN_US,max_length=10,choices=Lang.choices)
+    # true is dark theme
+    theme = models.BooleanField(default=False)
 
 
 

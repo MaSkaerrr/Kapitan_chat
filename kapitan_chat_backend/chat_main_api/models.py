@@ -27,7 +27,7 @@ class Chat(models.Model):
     created_at: datetime = models.DateTimeField(auto_now_add=True)
     updated_at: datetime = models.DateTimeField(auto_now_add=True)
 
-    users: list[User] = models.ManyToManyField(User, related_name='chats')
+    users = models.ManyToManyField(User, related_name='chats')
     created_by: User = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_created')
 
     messages: list[Message]
@@ -50,8 +50,8 @@ class Message(models.Model):
 
 class Attachment(models.Model):
     id: int = models.AutoField(primary_key=True)
-    name: str = models.CharField(max_length=64)
-    storage_id: str = models.CharField(max_length=64) # хєш-айді з сховища, усі однакові файли мають однаковий хеш, але можуть мати різні назви, тому зберігати окремо файли з назвами не ефективно. Айді хєшу з сервісу сховання файлів
+    name: str = models.CharField(max_length=100)
+    storage_id = models.CharField(max_length=64,null=True, blank=True, db_index=True) # хєш-айді з сховища, усі однакові файли мають однаковий хеш, але можуть мати різні назви, тому зберігати окремо файли з назвами не ефективно. Айді хєшу з сервісу сховання файлів
     type: str = models.CharField(max_length=32)
     message: Message = models.ForeignKey(Message, on_delete=models.SET_NULL, related_name="attachments", null=True)
 

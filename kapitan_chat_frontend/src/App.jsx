@@ -9,6 +9,7 @@ import SignUp from "./ComponentPage/Sign Up";
 import Logout from "./ComponentPage/LogOut";
 import AuthProvider from "./Provider/AuthProvider";
 import AvatarUpload from "./ComponentPage/AvatarUpload";
+import './mainstyle.css'
 function App() {
   
   return (
@@ -26,7 +27,7 @@ function App() {
       
       </Routes>
    
-      <Outlet />
+      <Outlet className="app-conteiner" />
     </AuthProvider>
   );
 }

@@ -7,7 +7,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 import logging
 
-from .serializers import RegisterSerializer, MeUserSerializer
+from rest_framework import generics
+
+from .serializers import RegisterSerializer, MeUserSerializer, GetUsersSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -39,3 +41,10 @@ class GetMe(APIView):
                       .data)
         logger.info(serialized)
         return Response(serialized, status=status.HTTP_200_OK)
+    
+
+
+class GetUsers(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = GetUsersSerializer
+    queryset = User.objects.all()

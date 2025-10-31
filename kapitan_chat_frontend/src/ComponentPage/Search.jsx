@@ -20,11 +20,11 @@ export default function Search({chatList = []}) {
 
     console.log(searchResult);
     return (
-        <div style={{ position: "relative", width: 320 }}>
+        <div className="search-conteiner" style={{ position: "relative", width: 320 }}>
         
-        <div className="flex " style={{alignItems:'center', display:'flex'}}>
-            <input  type="text" className="form-control" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
-            <button type="button" className="btn btn-primary search"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToS3_1fXaEQKAO0PnEwVJiUtxs6Bw4Gie0Uw&s" alt=""  width={"20px"}/></button>
+        <div className="search-bar" style={{alignItems:'center', display:'flex'}}>
+            <input  type="text" className="form-control message-input" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <button type="button" className="btn btn-primary search search-icon"><i className="fas fa-search"></i></button>
         </div>
         
         {
@@ -42,8 +42,9 @@ export default function Search({chatList = []}) {
             overflow: "auto",
             zIndex: 1000,
             padding: 8,
+            alignItems: "center",
             }}>
-                        <div>{searchResult.length}</div>
+                        
                         <ChatList chatList={searchResult}/>
                     </div>
                 )

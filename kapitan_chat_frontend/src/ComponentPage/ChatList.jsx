@@ -1,19 +1,22 @@
 import { useState,useEffect } from "react";
 export default function ChatList({chatList}) {
     
-    
-
+    let i = 0
 
     return (
-        <div>
+        <div className="chats-container">
             {chatList.map((chat) => (
-                <div>
-                    <div style={{alignItems:"center",display:"flex"}}>
-                        <img src={chat.img} style={{width:'30px'}}/>
-                    <div>{chat.name}</div>
+                <div className={`chat-item${chat.active ? " active" : ""}`} key={chat.userId}>
+                    <div className="chat-avatar" >
+                        <img src={chat.img} />
+                    
                     </div>
-                    <br />
-                    <div>{chat.lastMessage}</div>
+                    <div className="chat-header">
+                        <div className="chat-name">{chat.name}</div>
+                        
+                    </div>
+                    <div className="chat-preview">{chat.lastMessage}</div>
+                    
                 </div>
             ))}
         </div>
