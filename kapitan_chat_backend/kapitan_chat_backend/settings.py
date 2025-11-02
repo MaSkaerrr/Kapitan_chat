@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'channels',
     'drf_spectacular',
     'corsheaders',
     'users_api',
@@ -76,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'kapitan_chat_backend.wsgi.application'
+WSGI_APPLICATION = 'kapitan_chat_backend.asgi.application'
 
 
 # Database
@@ -113,6 +114,16 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ["redis://:P%4055w0rd@37.27.62.117:25530/0"],
+            "serializer_format": "json",
+        },
+    },
 }
 
 from datetime import timedelta
