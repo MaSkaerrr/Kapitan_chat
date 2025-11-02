@@ -1,22 +1,50 @@
 from typing import Any
 
+from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+
+from chat_main_api.models import Message
+from chat_main_api.serializers import MessageSerializer
 
 
 class MainConsumer(AsyncJsonWebsocketConsumer):
+    group_name = "chats_main"
     async def connect(self):
-        print('Somebody just connected!')
-        await (self.close() if self.scope['user'].is_anonymous else self.accept())
+        if self.scope['user'].is_anonymous:
+            await self.close()
+            return
+
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        await self.accept()
 
 
     async def disconnect(self, close_code):
-        print("Somebody just disconnected!", close_code)
+        await self.channel_layer.group_discard(self.group_name, self.channel_name)
+
+
+    async def chat_message_preprocess(self, content: dict[str, Any]):
+        msg = await Message.objects.acreate(**content)
+
+        await self.channel_layer.group_send(
+            self.group_name,
+            {
+                'type': 'chat_message',
+                'message': await sync_to_async(lambda: MessageSerializer(msg).data, thread_sensitive=True)(),
+            }
+        )
+
+    async def chat_message(self, event):
+        message = event['message']
+
+        await self.send_json({
+            'type': 'message',
+            'data': message
+        })
 
 
     async def receive_json(self, content: dict[str, Any], **kwargs):
         print("Data just received!", content) #TODO
-        await self.send_json(content)
+        match(content['type']):
+            case "message": await self.chat_message_preprocess(content['data'])
 
-
-    async def chat_message(self, event):
-        ...
+        #await self.send_json(content)
