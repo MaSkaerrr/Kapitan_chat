@@ -15,10 +15,12 @@ class ChatSerializer(serializers.ModelSerializer):
         if data['type'] == ChatType.DIRECT:
             if len(data['users']) != 2:
                 raise serializers.ValidationError("DIRECT chat can only have 2 users.")
-            if data['name']:
+            if 'name' in data:
                 raise serializers.ValidationError("DIRECT chat cant have name.")
-            if data['description']:
+            if 'description' in data:
                 raise serializers.ValidationError("DIRECT chat cant have description.")
+            if Chat.objects.filter(users__id=data['users'][0].id).filter(users__id=data['users'][1].id).filter(type=ChatType.DIRECT).exists():
+                raise serializers.ValidationError("Chat already exists.")
 
         return data
 
