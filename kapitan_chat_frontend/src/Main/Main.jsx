@@ -2,7 +2,7 @@
 import ChatList from '../ComponentPage/ChatList';
 import Search from '../ComponentPage/Search';
 import ChatArea from '../ComponentPage/ChatArea';
-import SettingsList from '../SettingsList';
+import SettingsList from '../ComponentPage/SettingsComp/SettingsList';
 import  {useAuth}  from '../Provider/AuthProvider';
 import { useState,useContext } from 'react';
 

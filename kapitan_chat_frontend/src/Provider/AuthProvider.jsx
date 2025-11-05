@@ -5,12 +5,13 @@ const context = createContext({});
 
 export default function AuthContext({ children }) {
 
-  
-  const [userid, setUserid] = useState(2);
+  const [{JWTaccessToken,JWTrefreshToken}, setToken] = useState({JWTaccessToken:"",JWTrefreshToken:""});
+
+  const [userid, setUserid] = useState(1);
   const [langChoiceList, setLangChoiceList] = useState([]);
   const [local, setLocal] = useState({});
   //theme true is dark false is light
-  const [settingparams, setSettingparams] = useState({user:2,language:"en",theme:false});
+  const [settingparams, setSettingparams] = useState({user:1,language:"en",theme:false});
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [chatList, setChatList] = useState([
@@ -33,7 +34,6 @@ export default function AuthContext({ children }) {
   
   async function getSettings (url = SETTINGSURL) {
     const res = await axios.get(url);
-    console.log(res.data);
     return res.data;
   }
 
@@ -42,20 +42,62 @@ export default function AuthContext({ children }) {
     console.log(res.data);
     return res.data;
   }
-  
+
+
+  function UserApi(URL ='http://127.0.0.1:8000/api/users/'){
+    const api = axios.create({
+      baseURL: URL,
+      headers: {
+        Authorization: `Bearer ${JWTaccessToken}`,
+      }
+    })
+
+    return{
+      getList: async () => api.get('').then((res) => res.data),
+      get: async (id) => api.get(`${id}/`).then((res) => res.data),
+      getMe: async () => api.get('me/').then((res) => res.data),
+      register: async (data) => api.post('register/', data).then((res) => res.data),
+      token: async ({username, password}) => (await api.post('token/', {username, password})).data,
+      tokenRefresh: async () => api.post('token/refresh/', JWTrefreshToken).then((res) => res.data),
+      tokenVerify: async () => api.post('token/verify/', JWTaccessToken).then((res) => res.data),
+
+    }
+  }
+
+
+  //первоначальная загрузка
   useEffect(() => {
     try {
       getSettings().then((res) => {
         setLangChoiceList(res.language_choices);
         setLocal(res.locale);
         setSettingparams({user:res.user,language:res.language,theme:res.theme});
-    });
+      });
+      
+      if(localStorage.getItem('accessToken') && localStorage.getItem('refreshToken'))
+        setToken({JWTaccessToken:localStorage.getItem('accessToken'),JWTrefreshToken:localStorage.getItem('refreshToken')});
+        
+      else
+      {
+        // временная заглужка
+        UserApi().token({username:"maskerrr",password:"Admin_123"}).then((res) => {
+          console.log(res);
+          setToken({JWTaccessToken:res.access,JWTrefreshToken:res.refresh});
+          localStorage.setItem('accessToken',res.access);
+          localStorage.setItem('refreshToken',res.refresh);
+        });
+      }
+
     }
     catch (error) {
-      console.log("возможно не активен сервер", error);
+      console.warn("возможно не активен сервер", error);
     }
     
   }, []);
+
+  // useEffect(() => {
+  //   console.log('token',JWTaccessToken);
+  // }, [JWTaccessToken]);
 
   const first = useRef(true);
   useEffect(() => {

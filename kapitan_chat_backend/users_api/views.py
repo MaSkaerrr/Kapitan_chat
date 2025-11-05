@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -56,3 +56,11 @@ class Users(RetrieveAPIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         return super().get(request, *args, **kwargs)
+    
+
+class UserList(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+    queryset = User.objects.all() 
+    
+

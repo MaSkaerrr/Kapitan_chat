@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import LanguageSettings from "./ComponentPage/SettingsComp/languageSettings";
-import ThemeSettings from "./ComponentPage/SettingsComp/themeSettings";
+import LanguageSettings from "./languageSettings";
+import ThemeSettings from "./themeSettings";
 export default function SettingsList({isShow,children,setShow}) {
 
     const rootRef = useRef(null);

@@ -4,7 +4,7 @@ from typing import Any
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from users_api.serializers import MeUserSerializer
+from users_api.serializers import UserSerializer
 from .models import Message, Chat, Attachment, ChatType
 
 
@@ -34,7 +34,7 @@ class AttachmentSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    user: User = MeUserSerializer(read_only=True)
+    user: User = UserSerializer(read_only=True)
     user_id: int = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True, source='user')
     attachment_ids: list[Attachment] = serializers.PrimaryKeyRelatedField(many=True, queryset=Attachment.objects.all(), write_only=True, source='attachments')
     attachments: list[Attachment] = AttachmentSerializer(many=True, read_only=True)

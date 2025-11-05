@@ -16,6 +16,24 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Kapitan Chat API",
+    "VERSION": "1.0.0",
+
+   
+    # убрать префикс /api из путей в схеме
+    "SCHEMA_PATH_PREFIX": r"/api",
+
+    # порядок и описания групп (тегов)
+    "TAGS": [
+        {"name": "users", "description": "Регистрация, токены, профиль"},
+        {"name": "chat", "description": "Чаты, сообщения, вложения"},
+        {"name": "settings_api", "description": "Пользовательские настройки"},
+    ],
+
+    # чтобы теги шли в указанном порядке
+    "SORT_OPERATION_TAGS": True,
+}
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
