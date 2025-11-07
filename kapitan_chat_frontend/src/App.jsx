@@ -9,12 +9,14 @@ import SignUp from "./ComponentPage/Sign Up";
 import Logout from "./ComponentPage/LogOut";
 import AuthProvider from "./Provider/AuthProvider";
 import AvatarUpload from "./ComponentPage/AvatarUpload";
+import Authentication from "./login-register/authentication"
+
 function App() {
   
   return (
     <AuthProvider> 
       <BaseLayout></BaseLayout>
-      <Routes>
+      {/* <Routes>
    
         <Route index element={<Main></Main>}></Route>
         <Route path="main" element={<><Main /></>}></Route>
@@ -25,7 +27,8 @@ function App() {
         <Route path="*" element={<><NotFound/></>} />
       
       </Routes>
-   
+    */}
+    <Authentication/>
       <Outlet />
     </AuthProvider>
   );
