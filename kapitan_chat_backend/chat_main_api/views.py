@@ -7,6 +7,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from .models import Message, Chat, Attachment
 from .serializers import MessageSerializer, ChatSerializer, AttachmentSerializer
 
+from drf_spectacular.utils import extend_schema
 
 # Create your views here.
 def list_permitted(self, qs):
@@ -20,7 +21,7 @@ def list_permitted(self, qs):
     serializer = self.get_serializer(queryset, many=True)
     return Response(serializer.data)
 
-
+@extend_schema(tags=['messages'])
 class MessageView(ModelViewSet):
     """
     Пайплайн публікації повідомлення:
@@ -44,7 +45,7 @@ class MessageView(ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-
+@extend_schema(tags=['chat'])
 class ChatView(mixins.CreateModelMixin,
                mixins.RetrieveModelMixin,
                mixins.ListModelMixin,
@@ -63,7 +64,7 @@ class ChatView(mixins.CreateModelMixin,
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-
+@extend_schema(tags=['attachments'])
 class AttachmentView(ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = AttachmentSerializer

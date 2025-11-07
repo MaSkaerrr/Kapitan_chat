@@ -33,7 +33,7 @@ class Chat(models.Model):
     messages: list[Message]
 
     def __str__(self):
-        return self.name
+        return f'{self.name} + created by {self.created_by.username}'
 
 
 class Message(models.Model):

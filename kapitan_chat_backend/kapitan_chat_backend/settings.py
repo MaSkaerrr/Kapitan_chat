@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Kapitan Chat API",
-    "VERSION": "1.0.0",
+    "VERSION": "1.3.0",
 
    
     # убрать префикс /api из путей в схеме
@@ -27,12 +27,27 @@ SPECTACULAR_SETTINGS = {
     # порядок и описания групп (тегов)
     "TAGS": [
         {"name": "users", "description": "Регистрация, токены, профиль"},
+        
         {"name": "chat", "description": "Чаты, сообщения, вложения"},
+        {"name": "messages", "description": "Сообщения"},
+        {"name": "attachments", "description": "Вложения"},
+
         {"name": "settings_api", "description": "Пользовательские настройки"},
     ],
 
     # чтобы теги шли в указанном порядке
     "SORT_OPERATION_TAGS": True,
+
+    #хук для групирования тегов 
+    "POSTPROCESSING_HOOKS": ["kapitan_chat_backend.schema_hooks.add_tag_groups"],
+
+    "SWAGGER_UI_SETTINGS": {
+        "docExpansion": "list",
+        "persistAuthorization": True,
+        "plugins": [
+            "SwaggerUIBundle.plugins.TagGroupsPlugin",
+        ],
+    },
 }
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
