@@ -9,8 +9,18 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
 
 import os
 
+from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kapitan_chat_backend.settings')
 
-application = get_asgi_application()
+django_server = get_asgi_application()
+
+from . import ws_urls
+from .middleware import JWTAuthMiddleware
+
+application = ProtocolTypeRouter({
+    "http": django_server,
+    "websocket": JWTAuthMiddleware(URLRouter(ws_urls.websocket_urlpatterns)),
+})

@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'channels',
     'drf_spectacular',
     'corsheaders',
     'chat_main_api',
@@ -80,6 +81,7 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -101,7 +103,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'kapitan_chat_backend.urls'
@@ -121,7 +122,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'kapitan_chat_backend.wsgi.application'
+WSGI_APPLICATION = 'kapitan_chat_backend.asgi.application'
 
 
 # Database
@@ -169,6 +170,16 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ["redis://:P%4055w0rd@37.27.62.117:25530/0"],
+            "serializer_format": "json",
+        },
+    },
 }
 
 from datetime import timedelta

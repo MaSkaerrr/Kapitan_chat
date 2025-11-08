@@ -3,3 +3,6 @@ djangorestframework
 djangorestframework-simplejwt
 django-cors-headers
 drf_spectacular
+channels
+uvicorn
+websockets
