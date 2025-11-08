@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# .gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

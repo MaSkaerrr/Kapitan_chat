@@ -24,7 +24,7 @@ export default function ChatArea() {
             {/* <!-- Область сообщений --> */}
             <div class="messages-container">
                 <div class="message received">
-                    <div class="message-avatar avatar-1">AS</div>
+                    <div class="message-avatar ">AS</div>
                     <div class="message-content">
                         <div class="message-text">I had science and creative careers, but I decided to read it in story?</div>
                         <div class="message-time">12:40</div>
@@ -40,7 +40,7 @@ export default function ChatArea() {
                 </div>
                 
                 <div class="message received">
-                    <div class="message-avatar avatar-1">AS</div>
+                    <div class="message-avatar ">AS</div>
                     <div class="message-content">
                         <div class="message-text">Mixed feelings about it, but I think it was the right choice.</div>
                         <div class="message-time">12:45</div>
