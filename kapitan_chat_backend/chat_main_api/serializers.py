@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from django.contrib.auth.models import User
@@ -38,25 +38,26 @@ class AttachmentSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     user: User = UserSerializer(read_only=True)
     user_id: int = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True, source='user')
-    attachment_ids: list[Attachment] = serializers.PrimaryKeyRelatedField(many=True, queryset=Attachment.objects.all(), write_only=True, source='attachments')
     attachments: list[Attachment] = AttachmentSerializer(many=True, read_only=True)
+    attachment_ids: list[Attachment] = serializers.PrimaryKeyRelatedField(many=True, queryset=Attachment.objects.all(), write_only=True, source='attachments')
     chat_id: int = serializers.PrimaryKeyRelatedField(write_only=True, required=True, queryset=Chat.objects.all(), source='chat')
     chat: Chat = ChatSerializer(read_only=True)
 
 
     def validate(self, attributes: dict[str, Any]) -> dict[str, Any]:
-        if attributes['user'] not in attributes['chat'].users:
+        if not Chat.objects.filter(users__id=attributes['user'].id, id=attributes['chat'].id).exists():
             raise serializers.ValidationError("Message publisher should be related to chat.")
         return attributes
 
-
     def create(self, validated_data: dict[str, Any]) -> Message:
+        attachments = validated_data.pop('attachments', [])
         message = Message.objects.create(**validated_data)
-        message.save()
-        message.chat.updated_at = datetime.now()
-        message.save()
-        return message
+        if attachments:
+            message.attachments.set(attachments)
+        message.chat.updated_at = datetime.now(tz=timezone.utc)
+        message.chat.save()
 
+        return message
 
     class Meta:
         model = Message
