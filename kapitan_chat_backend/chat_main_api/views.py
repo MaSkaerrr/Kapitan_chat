@@ -1,4 +1,5 @@
-from django.db.models import QuerySet
+from django.core.handlers.asgi import ASGIRequest
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import mixins, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -34,8 +35,20 @@ class MessageView(ModelViewSet):
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
 
-    def list(self, request, *args, **kwargs):
-        return list_permitted(self, Message.objects.filter(user_id=request.user.id))
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="chat",
+                type=int,
+                location='query',
+                required=True,
+            )
+        ]
+    )
+    def list(self, request: ASGIRequest, *args, **kwargs):
+        if (chat_id := request.GET.get('chat')) is None:
+            return Response({"error": "chat query parameter is required!"}, status=status.HTTP_400_BAD_REQUEST)
+        return list_permitted(self, Message.objects.filter(user_id=request.user.id, chat_id=chat_id))
 
     def retrieve(self, request, *args, **kwargs):
         instance: Message = self.get_object()
