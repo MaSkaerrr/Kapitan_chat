@@ -1,10 +1,11 @@
 import { useState,useEffect } from "react";
 import { useAuth } from "../Provider/AuthProvider";
-export default function ChatList({chatList}) {
+export default function ChatList({chatList,setChatId}) {
+
     return (
         <div className="chats-container">
             {chatList.map((chat) => (
-                <div className={`chat-item${chat.active ? " active" : ""}`} key={chat.id}>
+                <div className={`chat-item${chat.active ? " active" : ""}`} key={chat.id} onClick={()=>setChatId(chat.id)}>
                     <div className="chat-avatar" >
 
                         {chat.img? <img src={chat.img} /> : <div>

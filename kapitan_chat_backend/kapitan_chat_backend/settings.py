@@ -79,6 +79,8 @@ INSTALLED_APPS = [
     'settings_api',
     'users_api',
 ]
+ASGI_APPLICATION = 'kapitan_chat_backend.asgi.application'
+WSGI_APPLICATION = 'kapitan_chat_backend.wsgi.application'
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True

@@ -9,7 +9,7 @@ export default function AuthContext({ children }) {
     {JWTaccessToken:localStorage.getItem('access'),JWTrefreshToken:localStorage.getItem('refresh')});
 
   const [userid, setUserid] = useState(1);
-  const [me, setMe] = useState(null);
+  const [me, setMe] = useState({});
 
   const [langChoiceList, setLangChoiceList] = useState([]);
   const [local, setLocal] = useState({});
@@ -36,6 +36,7 @@ export default function AuthContext({ children }) {
   
   const SETTINGSURL = `http://127.0.0.1:8000/settings_api/UserSettings/${userid}/`;
   const BASEAPI ="http://127.0.0.1:8000/api/"
+  const BASE_WS_URL = `ws://127.0.0.1:8000/` 
   async function getSettings (url = SETTINGSURL) {
     const res = await axios.get(url);
     return res.data;
@@ -131,6 +132,8 @@ export default function AuthContext({ children }) {
         console.log('token',access);
       
         const me = await UserApi().getMe();
+        setMe(me);
+        setUserid(me.id);
         console.log('me',me);
         
         const chat = await ChatApi().getList();
@@ -194,6 +197,9 @@ useEffect(()=>
     setIsAuthenticated, 
     login,
     logout,
+
+    userid,
+    me,
     
     chatList,
     setChatList,
@@ -203,6 +209,9 @@ useEffect(()=>
     local,
     settingparams,
     setSettingparams,
+    BASEAPI,
+    BASE_WS_URL,
+    JWTaccessToken,
 
     UserApi,
     ChatApi,

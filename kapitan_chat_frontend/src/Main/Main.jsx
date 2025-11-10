@@ -4,15 +4,23 @@ import Search from '../ComponentPage/Search';
 import ChatArea from '../ComponentPage/ChatArea';
 import SettingsList from '../ComponentPage/SettingsComp/SettingsList';
 import  {useAuth}  from '../Provider/AuthProvider';
-import { useState,useContext } from 'react';
+import { useState,useEffect } from 'react';
 
 export default function Main() {
   // const isAuthenticated = localStorage.getItem("isAuthenticated");
 
   
-  let {chatList} = useAuth();
+  let {chatList,setChatList} = useAuth();
   const [show, setShow] = useState(false);
+  const [chatId, setChatId] = useState(null);
+  const [chat, setChat] = useState(null);
   
+  useEffect(() => {
+    console.log('chatId',chatId);
+    setChatList((chatList) => chatList.map((chat) => ({ ...chat, active: chat.id === chatId })));
+    setChat(chatList.find((chat) => chat.id === chatId));
+    console.log('chat',chatList);
+  }, [chatId]);
  
   return (
     <div className="app-container" style={{ padding: "20px", display: "flex",gap:"30px" }}>
@@ -28,11 +36,16 @@ export default function Main() {
           
           <Search chatList={chatList} />
         </div>
-        <ChatList  chatList={chatList}/>
+        <ChatList  chatList={chatList} setChatId={setChatId}/>
       </section>
       <section>
         {/* {isInChat ? <div>Chat</div> : <div>Empty</div> } */}
-        <ChatArea />
+        {chatId ?
+        <ChatArea chatId={chatId} chat={chat}/>:
+
+        <div className="empty-chat" style={{color:'white'}}>Select a chat</div>
+        }
+        
       </section>
     </div>
   );
