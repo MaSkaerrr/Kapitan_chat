@@ -1,11 +1,21 @@
-import axios from "axios"
+
 import { useState,useRef,useEffect } from "react"
 import { useAuth } from "../Provider/AuthProvider"
 
+/**
+ * Компонент для ввода сообщения
+ * 
+ * @param {Function} setlist - функция для обновления списка сообщений
+ * @param {number} chatid - идентификатор чата
+ * 
+ * @returns {React.Component} - компонент для ввода сообщения
+ */
 export default function MessageInputArea({setlist,chatid}) {
     const {JWTaccessToken,BASE_WS_URL,userid} = useAuth();
     const [msg, setmsg] = useState("");
     const wsRef = useRef(null);
+
+    /** соединение с вебсокетом */
     useEffect(() => {
     const ws = new WebSocket(`${BASE_WS_URL}ws/chat?token=${JWTaccessToken}`);
     wsRef.current = ws;
@@ -40,6 +50,7 @@ export default function MessageInputArea({setlist,chatid}) {
     return () => ws.close();
   }, [BASE_WS_URL, JWTaccessToken]); 
 
+  // отправка сообщения
   const send = (obj) => {
     const ws = wsRef.current;
     if (!ws || ws.readyState !== WebSocket.OPEN) {
@@ -52,6 +63,15 @@ export default function MessageInputArea({setlist,chatid}) {
 
 
 
+/**
+ * Обработчик события отправки сообщения
+ * 
+ * @param {Event} e - событие отправки формы
+ * 
+ * @returns {void}
+ * 
+ * @throws {Error} - если возникла ошибка при отправке сообщения
+ */
     function MessageHandler(e){
         e.preventDefault();
         try{
@@ -81,7 +101,7 @@ export default function MessageInputArea({setlist,chatid}) {
         <div className="message-input-container">
                 <div className="message-input-wrapper">
                     <button className="icon-btn"><i className="fas fa-paperclip"></i></button>
-                    <label htmlFor="msg">Message</label>
+                    <label htmlFor="msg">Message:</label>
                     <input type="text" className="message-input" name="message" id="msg" placeholder="Write message..." 
                     value={msg} onChange={(e) => setmsg(e.target.value)}/>
                     <div className="input-actions">

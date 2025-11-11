@@ -4,7 +4,7 @@ import Search from '../ComponentPage/Search';
 import ChatArea from '../ComponentPage/ChatArea';
 import SettingsList from '../ComponentPage/SettingsComp/SettingsList';
 import  {useAuth}  from '../Provider/AuthProvider';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useMemo } from 'react';
 
 export default function Main() {
   // const isAuthenticated = localStorage.getItem("isAuthenticated");
@@ -14,6 +14,8 @@ export default function Main() {
   const [show, setShow] = useState(false);
   const [chatId, setChatId] = useState(null);
   const [chat, setChat] = useState(null);
+
+  
   
   useEffect(() => {
     console.log('chatId',chatId);
@@ -21,25 +23,37 @@ export default function Main() {
     setChat(chatList.find((chat) => chat.id === chatId));
     console.log('chat',chatList);
   }, [chatId]);
+
+
+  const chatSectionStyle = useMemo(() => ({
+    display:'flex',gap:"10px",flexDirection:'column'
+  }),[])
+
+  const appcontstyle = useMemo(() => ({ padding: "20px", display: "flex",gap:"30px" }),[])
+
+  const ProfileButtonStyle = useMemo(() => ({borderRadius:'50%',border:"5px solid rgba(237, 142, 0, 0)"}))
  
   return (
-    <div className="app-container" style={{ padding: "20px", display: "flex",gap:"30px" }}>
-      <section  className="chat-list-sidebar" style={{display:'flex',gap:"10px",flexDirection:'column'}} >
+    <div className="app-container" style={appcontstyle}>
+
+      {/* боковое меню с переченью чатов и кнопка настроек и поиск  */}
+      <section  className="chat-list-sidebar" style={chatSectionStyle} >
         <div style={{border:"0px ", display:"flex", alignItems:"center",borderRadius:"40px"}}>
           <SettingsList isShow={show} setShow={setShow} >
               
           </SettingsList>
           
-          <button style={{borderRadius:'50%',border:"5px solid rgba(237, 142, 0, 0)"}} onDoubleClick={() => setShow(!show)}>
-            <img src={"https://randomuser.me/api/portraits/men/41.jpg"} alt="profile photo" style={{borderRadius:"50%"}} width='50px' />
+          <button style={ProfileButtonStyle} onDoubleClick={() => setShow(!show)}>
+            <img src={"https://randomuser.me/api/portraits/men/41.jpg"} alt="profile photo" style={{borderRadius:"50%"}} width='50px' decoding='async' />
           </button>
           
           <Search chatList={chatList} />
         </div>
         <ChatList  chatList={chatList} setChatId={setChatId}/>
       </section>
+      {/* содержимое чата */}
       <section>
-        {/* {isInChat ? <div>Chat</div> : <div>Empty</div> } */}
+        
         {chatId ?
         <ChatArea chatId={chatId} chat={chat}/>:
 

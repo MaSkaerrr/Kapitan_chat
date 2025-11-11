@@ -26,11 +26,6 @@ export default function AuthContext({ children }) {
               lastMessage:"eshkere",
               name:"Jecky",
               userId:2},
-              {img:"https://randomuser.me/api/portraits/men/58.jpg",
-              lastMessage:"WHats up",
-              active : true,
-              name:"Doe",
-              userId:3},
       ]);
   
   
@@ -64,8 +59,8 @@ export default function AuthContext({ children }) {
       getMe: async () => api.get('me/').then((res) => res.data),
       register: async (data) => api.post('register/', data).then((res) => res.data),
       token: async ({username, password}) => (await api.post('token/', {username, password})).data,
-      tokenRefresh: async () => api.post('token/refresh/', JWTrefreshToken).then((res) => res.data),
-      tokenVerify: async () => api.post('token/verify/', JWTaccessToken).then((res) => res.data),
+      tokenRefresh: async () => api.post('token/refresh/', {refresh: JWTrefreshToken}).then((res) => res.data),
+      tokenVerify: async () => api.post('token/verify/', {token: JWTaccessToken}).then((res) => res.data),
 
     }
   }
@@ -90,7 +85,7 @@ export default function AuthContext({ children }) {
     }
   }
 
-  function MessageApi(URL =`${BASEAPI}message/`){
+  function MessageApi(URL =`${BASEAPI}chat/message/`){
     const api = axios.create({
       baseURL: URL,
       headers: {
@@ -100,9 +95,8 @@ export default function AuthContext({ children }) {
     })
 
     return{
-      getList: async () => api.get('').then((res) => res.data),
+      getList: async (chatid) => api.get('?chat='+chatid+'').then((res) => res.data),
       get: async (id) => api.get(`${id}/`).then((res) => res.data),
-      post: async(data) => api.post('', data).then((res) => res.data),
       put: async (id, data) => api.put(`${id}/`, data).then((res) => res.data),
       delete: async (id) => api.delete(`${id}/`).then((res) => res.data),
     }
@@ -124,9 +118,23 @@ export default function AuthContext({ children }) {
         if(!access || !refresh){
           // временно 
           const t = await UserApi().token({ username: "maskerrr", password: "Admin_123" });
+
           access = t.access; refresh = t.refresh;
           localStorage.setItem("access", access);
           localStorage.setItem("refresh", refresh);
+        }
+        else{
+          try{
+            await  UserApi().tokenVerify()
+          }
+          catch{
+            const newtoken = await UserApi().tokenRefresh();
+            console.log(newtoken)
+            setToken({JWTrefreshToken,JWTaccessToken:newtoken});
+            localStorage.setItem("access", newtoken.access);
+          }
+         
+         
         }
 
         console.log('token',access);
@@ -158,13 +166,7 @@ export default function AuthContext({ children }) {
   
   }, []);
 
-  // useEffect(() => {
-  //   console.log('token',JWTaccessToken);
-  // }, [JWTaccessToken]);
-useEffect(()=>
-{
-  console.log(chatList)
-},[chatList])
+
   const first = useRef(true);
   useEffect(() => {
     if (first.current) { first.current = false; return; }

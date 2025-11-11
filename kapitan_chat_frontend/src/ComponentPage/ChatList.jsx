@@ -1,5 +1,12 @@
-import { useState,useEffect } from "react";
-import { useAuth } from "../Provider/AuthProvider";
+
+/**
+ * Компонент для отображения списка чатов
+ * 
+ * @param {array} chatList - список чатов
+ * @param {function} setChatId - функция для обновления идентификатора чата
+ * 
+ * @returns {React.Component} - компонент для отображения списка чатов
+ */
 export default function ChatList({chatList,setChatId}) {
 
     return (
@@ -8,7 +15,7 @@ export default function ChatList({chatList,setChatId}) {
                 <div className={`chat-item${chat.active ? " active" : ""}`} key={chat.id} onClick={()=>setChatId(chat.id)}>
                     <div className="chat-avatar" >
 
-                        {chat.img? <img src={chat.img} /> : <div>
+                        {chat.img? <img src={chat.img} decoding="async" /> : <div>
                             <h2>{chat.name.charAt(0).toUpperCase()+chat.name.charAt(chat.name.length-1).toLowerCase()}</h2></div>}
                         
                     

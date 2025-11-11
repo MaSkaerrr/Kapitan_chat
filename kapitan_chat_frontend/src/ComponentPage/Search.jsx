@@ -1,10 +1,18 @@
 import { useEffect,useState } from "react";
 import ChatList from "./ChatList";
 
-export default function Search({chatList = []}) {
+/**
+ * Компонент для поиска чатов
+ * @param {object} props - Параметры компонента
+ * @param {array} props.chatList - Список чатов
+ * @returns {jsx} - Компонент для поиска чатов
+ */
+export default function Search({chatList}) {
 
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
+
+    
 
     function searching(){
         if (search.length <2) return []
@@ -16,6 +24,8 @@ export default function Search({chatList = []}) {
 
     useEffect(() => {
         setSearchResult(searching());
+
+        console.log('chatList',chatList)
     }, [search]);
 
     console.log(searchResult);
