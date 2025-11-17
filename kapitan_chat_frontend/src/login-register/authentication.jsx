@@ -181,30 +181,58 @@ const Authentication = () => {
 
         if(authType === 'register'){
             axios.post('http://127.0.0.1:8000/api/users/register/', registerDetails)
-            .then(response => {
-                console.log("Реєстрація успішна!");
+                .then(response => {
+                        console.log("Реєстрація успішна!");
+                        axios.post('http://127.0.0.1:8000/api/users/token/', (
+                    // Надсилаються деталі залежно від типу форми
+                    authType === 'login' ? loginDetails : {"username" : registerUsername, "password" : registerPassword}
+                ))
+                .then(response => {
+                    console.log("Вхід успішний!", response.data);
+                    localStorage.setItem("access", response.data.access);
+                    localStorage.setItem("refresh", response.data.refresh);
+                    bubble_text_animate("Welcome!");
+                    happy_animation();
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                    bubble_text_animate("Wrong username or password! Are you a hacker??");
+                    angry_animation();
+                });
+                return;
             })
             .catch(error => {
                 console.error('There was an error!', error);
+                if([registerUsername, firstName, email, registerPassword].includes('')){
+                    bubble_text_animate("Fill in all the fields!");
+                    angry_animation();
+                    return;
+                }else if(registerConfirmPassword != registerPassword){
+                    bubble_text_animate("Passwords do not match!");
+                    angry_animation();
+                    return;
+                }
             });
         }
 
-        axios.post('http://127.0.0.1:8000/api/users/token/', (
-            // Надсилаються деталі залежно від типу форми
-            authType === 'login' ? loginDetails : {"username" : registerUsername, "password" : registerPassword}
-        ))
-        .then(response => {
-            console.log("Вхід успішний!", response.data);
-            localStorage.setItem("access-token", response.data.access);
-            localStorage.setItem("refresh-token", response.data.refresh);
-            bubble_text_animate("Welcome!");
-            happy_animation();
-        })
-        .catch(error => {
-            console.error('There was an error!', error);
-            bubble_text_animate("Wrong username or password! Are you a hacker??");
-            angry_animation();
-        });
+        if(authType == 'login'){
+             axios.post('http://127.0.0.1:8000/api/users/token/', (
+                // Надсилаються деталі залежно від типу форми
+                authType === 'login' ? loginDetails : {"username" : registerUsername, "password" : registerPassword}
+            ))
+            .then(response => {
+                console.log("Вхід успішний!", response.data);
+                localStorage.setItem("access", response.data.access);
+                localStorage.setItem("refresh", response.data.refresh);
+                bubble_text_animate("Welcome!");
+                happy_animation();
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+                bubble_text_animate("Wrong username or password! Are you a hacker??");
+                angry_animation();
+            });
+        }
     }
 
     function LoginOrRegister(authType){
