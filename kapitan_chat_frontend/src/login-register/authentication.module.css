@@ -1,0 +1,519 @@
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+@keyframes chat_bubble_appear{
+    0%{
+        opacity: 0;
+        transform: scale(0.1, 1), rotate(180deg);
+    }
+
+    100%{
+        opacity: 100;
+        transform: scale(1, 1), rotate(180deg);
+    }
+}
+
+@keyframes blink {
+    0% {
+        clip-path: ellipse(0% 0% at top);
+    }
+    47.5%{
+        clip-path: ellipse(0% 0% at top);
+    }
+    50% {
+        clip-path: ellipse(250% 100% at top);
+    }
+    52.5%{
+        clip-path: ellipse(0% 0% at top);
+    }
+    100% {
+        clip-path: ellipse(0% 0% at top);
+    }
+}
+
+
+@keyframes angry_rotation{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+
+
+@keyframes angry_eye_right{
+    0%, 100%{
+        transform: rotate(0);
+        clip-path: ellipse(0 0 at top);
+    }
+
+    50%{
+        transform: rotate(-20deg);
+        clip-path: ellipse(250% 40% at top);
+    }
+}
+
+@keyframes angry_eye_left{
+    0%, 100%{
+        transform: rotate(0);
+        clip-path: ellipse(0 0 at top);
+    }
+
+    50%{
+        transform: rotate(20deg);
+        clip-path: ellipse(250% 40% at top);
+    }
+}
+
+
+@keyframes happy_eye_right{
+    0%, 100%{
+
+        clip-path: ellipse(0 0 at top);
+    }
+
+    50%{
+
+        clip-path: ellipse(250% 20% at top);
+    }
+}
+
+@keyframes happy_eye_left{
+    0%, 100%{
+        transform: rotate(0);
+        clip-path: ellipse(0 0 at top);
+    }
+
+    50%{
+
+        clip-path: ellipse(250% 20% at top);
+    }
+}
+
+@keyframes register_appear{
+    from {
+        opacity: 0;
+    }
+    to{
+        opacity: 100;
+    }
+}
+
+
+.authentication_container{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+
+    background-image: linear-gradient(
+        to bottom,
+        #3398ba,
+        #221B5A
+    );
+
+    margin: 0;
+}
+
+.authentication_form{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: rgba(217, 217, 217, 0.35);
+    
+    border-radius: 17.5px;
+    
+    width: 670px;
+    height: 670px;
+    
+    padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-shadow: 0 0 50px 4px rgba(0, 0, 0, 0.25);
+}
+
+.chat_bubble{
+    animation: chat_bubble_appear 2.5s;
+    height: 140px;
+  	width: 190px;
+    padding: 5px;
+  	background-color: rgb(26, 26, 26);
+  	position: absolute;
+  	left: 15px;
+    top: 175px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.25);
+    border: 5px solid rgb(137, 170, 181);
+
+    line-height: 22.5px;
+    font-size: 20px;
+    font-family: monospace;
+    color: rgb(50, 255, 47);
+    text-shadow: 0 0 10px mintcream;
+    font-weight: 600;
+    display: flex;
+    text-align: start;
+}
+
+/* Версія з папером */
+/* .chat_bubble{
+    animation: chat_bubble_appear 2.5s;
+    height: 140px;
+  	width: 190px;
+    padding: 5px;
+  	background-color: mintcream;
+  	position: absolute;
+  	left: 15px;
+    top: 175px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.25);
+    border: 5px solid mintcream;
+
+    font-size: 24px;
+    font-family: monospace;
+    color: black;
+    font-weight: 600;
+    display: flex;
+
+    text-align: start;
+}
+
+.chat_bubble:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 55%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-right-color: mintcream;
+	border-left: 0;
+    transform: rotate(180deg);
+	border-bottom: 0;
+	margin-top: -8px;
+	margin-left: 205px;
+} */
+
+.logo{
+    position: relative;
+
+    /* animation: angry_rotation 2s; */
+}
+
+.eyes_container{
+    position: absolute;
+    width: 120px;
+    height: 50px;
+
+    top: 125px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.angry_right_eye{
+    animation: angry_eye_right 3s !important;
+}
+
+.angry_left_eye{
+    animation: angry_eye_left 3s !important;
+}
+
+.angry_logo{
+    animation: angry_rotation 3s !important;
+}
+
+
+.happy_right_eye{
+    animation: happy_eye_right 3s !important;
+}
+
+.happy_left_eye{
+    animation: happy_eye_left 3s !important;
+}
+
+.closed_eye{
+    clip-path: ellipse(250% 100% at top);
+}
+
+.eye{
+    position: relative;
+    height: 40px;
+    width: 40px;
+    background-color: white;
+    border-radius: 50%;
+
+    overflow: hidden;
+}
+
+.pupil{
+    position: relative;
+    top: 10px;
+    left: 10px;
+
+    height: 20px;
+    width: 20px;
+    background-color: black;
+    border-radius: 50%;
+}
+
+.glare{
+    position: absolute;
+    top: 6px;
+    left: 6px;
+
+    height: 6px;
+    width: 6px;
+    background-color: rgba(255, 255, 255, 0.489);
+    border-radius: 50%;
+}
+
+.eyelid{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    height: 40px;
+    width: 40px;
+    background-color: rgb(95, 138, 223);
+    border-radius: 10%;
+
+    animation: blink 4s infinite;
+
+    z-index: 1;
+    transition: all 0.25s;
+}
+
+.register_content, .login_content{
+    position: absolute;
+    bottom: 15px;
+
+    height: 375px;
+    width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    animation: register_appear 0.5s;
+}
+
+.login_title, .register_title{
+    margin: 0;
+    font-family: "Istok Web", sans-serif;
+    font-size: 48px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.login_fields{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.login_fields input{
+    font-family: "Istok Web", sans-serif;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+
+    width: 375px;
+    height: 60px;
+
+    padding-left: 25px;
+    
+    border-radius: 10px;
+    border: none;
+    outline: none;
+
+    background-color: rgba(217, 217, 217, 0.25);
+}
+
+.login_fields input::placeholder{
+    font-family: "Istok Web", sans-serif;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+}
+
+.login_button, .register_button{
+    width: 150px;
+    height: 50px;
+    
+    border: none;
+    border-radius: 10px;
+
+    background-color: rgba(0, 0, 0, 0.65);
+
+    color: white;
+    font-size: 20px;
+    font-family: "Istok Web", sans-serif;
+    font-weight: bold;
+}
+
+.register_button{
+    width: 185px;
+    height: 40px;
+    
+    border: none;
+    border-radius: 30px;
+
+    background-color: rgba(0, 0, 0, 0.65);
+
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font-family: "Istok Web", sans-serif;
+    font-weight: bold;
+
+    transition: all 0.5s;
+}
+
+.register_button:hover{
+    background-color: rgba(31, 202, 68, 0.65);
+    transform: translateY(-2.5px);
+    box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.253);
+}
+
+.bottom_text{
+    position: relative;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.bottom_text span{
+    color: white;
+}
+
+.bottom_text span:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+.register_step{
+    top: 0px;
+    position: relative !important;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+
+    transition: opacity 0.25s;
+}
+
+.register_step input{
+    font-family: "Istok Web", sans-serif;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+
+    width: 400px;
+    height: 60px;
+
+    padding-left: 25px;
+    
+    border-radius: 10px;
+    border: none;
+    outline: none;
+
+    background-color: rgba(217, 217, 217, 0.25);
+}
+
+.register_step input::placeholder{
+    font-family: "Istok Web", sans-serif;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+}
+
+.hiddenStep {
+    opacity: 0;
+    transform: scale(1.1);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: none;
+}
+
+.visibleStep {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: flex;
+}
+
+.register_nav{
+    top: 20px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.register_nav_button{
+    position: absolute;
+
+    width: 75px;
+    height: 40px;
+    
+    border: none;
+    border-radius: 30px;
+
+    background-color: rgba(255, 255, 255, 0.25);
+
+    color: white;
+    font-size: 20px;
+    line-height: 40px;
+    text-align: center;
+    font-family: "Istok Web", sans-serif;
+    font-weight: bold;
+
+    transition: all 0.25s;
+}
+
+.register_nav_button:hover{
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.65);
+    transform: translateY(-2.5px);
+    box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.253);
+}
+
+.right_register_nav_button{
+    position: absolute;
+    bottom: 0;
+    right: 25px;
+    min-width: 100px;
+}
+
+.left_register_nav_button{
+    position: absolute;
+    bottom: 0;
+    left: 25px;
+}
+
+.register_steps_wrapper{
+    border: 5px solid rgb(137, 170, 181);
+    border-radius: 15px;
+    /* box-shadow: 0 0 10px 3px rgb(137, 170, 181); */
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.25);
+
+    position: relative;
+    height: 250px;
+    width: 450px;
+}
