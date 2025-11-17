@@ -8,3 +8,5 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+kapitan_chat_backend/db.sqlite3

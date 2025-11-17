@@ -32,7 +32,12 @@ export default function MessageInputArea({setlist,chatid}) {
         const payload = JSON.parse(ev.data);
         if (payload.type === "message") {
             console.log("WS message", payload.data);
-          setlist((list) => [...list, payload.data]);
+            if(payload.data.chat.id===chatid){
+              setlist((list) => [...list, payload.data]);
+            }
+            else{
+              alert("у вас сообщение в чате " + payload.data.chat.id);
+            }
         }
       } catch (e) {
         console.warn("bad WS message", e);
@@ -55,7 +60,7 @@ export default function MessageInputArea({setlist,chatid}) {
     const ws = wsRef.current;
     if (!ws || ws.readyState !== WebSocket.OPEN) {
       console.warn("WS not ready");
-      return;
+      return; 
     }
     ws.send(JSON.stringify(obj));
     console.log("send", obj);
@@ -101,7 +106,7 @@ export default function MessageInputArea({setlist,chatid}) {
         <div className="message-input-container">
                 <div className="message-input-wrapper">
                     <button className="icon-btn"><i className="fas fa-paperclip"></i></button>
-                    <label htmlFor="msg">Message:</label>
+                    <label htmlFor="msg"></label>
                     <input type="text" className="message-input" name="message" id="msg" placeholder="Write message..." 
                     value={msg} onChange={(e) => setmsg(e.target.value)}/>
                     <div className="input-actions">

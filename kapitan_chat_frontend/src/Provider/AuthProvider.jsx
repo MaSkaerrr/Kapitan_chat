@@ -30,8 +30,11 @@ export default function AuthContext({ children }) {
   
   
   const SETTINGSURL = `http://127.0.0.1:8000/settings_api/UserSettings/${userid}/`;
-  const BASEAPI ="http://127.0.0.1:8000/api/"
-  const BASE_WS_URL = `ws://127.0.0.1:8000/` 
+
+  const BASEAPI ="http://6.tcp.eu.ngrok.io:16199/api/"
+
+  const BASE_WS_URL = `ws://6.tcp.eu.ngrok.io:16199/` 
+
   async function getSettings (url = SETTINGSURL) {
     const res = await axios.get(url);
     return res.data;
@@ -97,8 +100,8 @@ export default function AuthContext({ children }) {
     return{
       getList: async (chatid) => api.get('?chat='+chatid+'').then((res) => res.data),
       get: async (id) => api.get(`${id}/`).then((res) => res.data),
-      put: async (id, data) => api.put(`${id}/`, data).then((res) => res.data),
-      delete: async (id) => api.delete(`${id}/`).then((res) => res.data),
+      // put: async (id, data) => api.put(`${id}/`, data).then((res) => res.data),
+      // delete: async (id) => api.delete(`${id}/`).then((res) => res.data),
     }
   }
 
@@ -117,7 +120,7 @@ export default function AuthContext({ children }) {
         let refresh = localStorage.getItem('refresh');
         if(!access || !refresh){
           // временно 
-          const t = await UserApi().token({ username: "maskerrr", password: "Admin_123" });
+          const t = await UserApi().token({ username: "User_228", password: "MyPassword123" });
 
           access = t.access; refresh = t.refresh;
           localStorage.setItem("access", access);
@@ -125,6 +128,7 @@ export default function AuthContext({ children }) {
         }
         else{
           try{
+            console.log('try', JWTaccessToken)
             await  UserApi().tokenVerify()
           }
           catch{
@@ -143,6 +147,7 @@ export default function AuthContext({ children }) {
         setMe(me);
         setUserid(me.id);
         console.log('me',me);
+        
         
         const chat = await ChatApi().getList();
 
