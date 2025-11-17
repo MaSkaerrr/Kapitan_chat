@@ -31,9 +31,9 @@ export default function AuthContext({ children }) {
   
   const SETTINGSURL = `http://127.0.0.1:8000/settings_api/UserSettings/${userid}/`;
 
-  const BASEAPI ="http://6.tcp.eu.ngrok.io:16199/api/"
+  const BASEAPI ="http://127.0.0.1:8000/api/"
 
-  const BASE_WS_URL = `ws://6.tcp.eu.ngrok.io:16199/` 
+  const BASE_WS_URL = `ws://127.0.0.1:8000/` 
 
   async function getSettings (url = SETTINGSURL) {
     const res = await axios.get(url);
@@ -105,19 +105,24 @@ export default function AuthContext({ children }) {
     }
   }
 
+    console.log('AuthProvider RENDER');
 
   //первоначальная загрузка
   useEffect(() => {
+    console.log('AuthProvider useEffect START');
     try {
       getSettings().then((res) => {
         setLangChoiceList(res.language_choices);
         setLocal(res.locale);
         setSettingparams({user:res.user,language:res.language,theme:res.theme});
       });
+      console.log('useEffect');
+      console.log(localStorage.getItem('access'));
       (async()=>
       {
         let access  = localStorage.getItem('access');
         let refresh = localStorage.getItem('refresh');
+        
         if(!access || !refresh){
           // временно 
           const t = await UserApi().token({ username: "User_228", password: "MyPassword123" });

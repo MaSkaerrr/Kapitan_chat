@@ -2,8 +2,7 @@ import { Outlet, Route, Routes } from "react-router-dom";
 import Main from "./Main/Main";
 import NotFound from "./ComponentPage/NotFound";
 
-
-import BaseLayout from "./ComponentPage/_layout/BaseLayout";
+import "./mainstyle.css";
 import SignIn from "./ComponentPage/Sign In";
 import SignUp from "./ComponentPage/Sign Up";
 import Logout from "./ComponentPage/LogOut";
@@ -15,7 +14,6 @@ function App() {
   
   return (
     <AuthProvider> 
-      {/* <BaseLayout></BaseLayout> */}
       <Routes>
    
         <Route index element={<Main></Main>}></Route>
